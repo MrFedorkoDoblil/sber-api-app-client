@@ -1,5 +1,3 @@
-import React from 'react'
-
 function ClientContent() {
   return (
     <div>ClientContent</div>

@@ -1,7 +1,9 @@
-import { Button, Checkbox, Form, Input, message } from 'antd'
-import useAuthStore from './authform.store'
+import { Button,  Form, Input,  } from 'antd'
 import { CSSVariables } from '@/styles/_variables';
-import { useEffect } from 'react';
+import useGlobalStore from '@/global.store';
+import useAuthStore from '../auth.store';
+import SBButton from '@/layout/components/Button/SBButton';
+import { UISize } from '@/layout/types/uiTypes';
 
 const fakeData = {
     login: '123123',
@@ -9,16 +11,26 @@ const fakeData = {
     confirmCode: '123'
 }
 
-const AuthForm = () => {
+const AuthForm = ({classname}:{classname?: string}) => {
     
-    const {login, loginCh, allert, allertCh, confimCode, confirmCodeCh, password, passwordCh} = useAuthStore();
-    useEffect(() => {
-        allertCh('Заполните обязательные поля')
-    }, [])
+    const {login, loginCh, allert, password, passwordCh, allertCh} = useAuthStore();
+    const {isAuthCh} = useGlobalStore() 
 
+    const handleLogin = () => {
+        if (login === fakeData.login && password === fakeData.password){
+            allertCh('')
+            isAuthCh(true)
+        } else {
+            allertCh('Неверный логин или пароль');
+            setTimeout(() => {
+                allertCh('')
+            }, 2000);
+        }
+    }
 
     return (
         <><Form
+            className={classname}
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
@@ -41,6 +53,7 @@ const AuthForm = () => {
             >
                 <Input.Password 
                     onChange={(e) => {passwordCh(e.currentTarget.value)}}
+                    value={password}
                 />
             </Form.Item>
 
@@ -52,16 +65,24 @@ const AuthForm = () => {
                     }}
                     type="primary"
                     htmlType="submit"
+                    onClick={handleLogin}
                 >
                     Войти
                 </Button>
             </Form.Item>
-        </Form>
+            <SBButton
+                actionType='login'
+                onClick={() => {}}
+                size={UISize.MD}
+                variant='primary'
+            />
         {allert && <div>
             {allert} 
         </div>}
+        </Form>
         </>
     )
 }
 export default AuthForm
+
 

@@ -5,9 +5,13 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
+import '@styles/_global.scss'
 import Clients from './modules/clients/index.tsx';
-import ClientContent from './modules/clients/components/ClientContent.tsx';
-import Option1 from './modules/clients/components/Option1.tsx';
+import Transactions from './modules/transactions/index.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,27 +22,30 @@ const router = createBrowserRouter([
       {
         path:"clients",
         element: <Clients/>,
-
-        children: [
-          {
-            path:"client-content",
-            element: <ClientContent/>
-          },
-          {
-            path: 'option2',
-            element: <Option1/>
-          }
-        ]
+      },
+      {
+        path: 'transactions',
+        element: <Transactions/>
       }
     ]
   },
 ],
 {
-  // basename: '/clients/client-content'
+  basename: undefined
 });
+
+const queryClient = new QueryClient({
+defaultOptions: {
+  queries: {
+    refetchOnWindowFocus: false,
+  }
+}
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>,
 )

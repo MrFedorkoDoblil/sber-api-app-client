@@ -1,0 +1,16 @@
+@import '../../../styles/variables';
+.auth{
+    &__page{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__form{
+        background-color: rgba($color: #ffffff, $alpha: 0.6);
+        backdrop-filter: blur(8px);
+        border-radius:40px;
+        padding: 40px 40px 10px 10px;
+    }
+}

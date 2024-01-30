@@ -1,64 +1,47 @@
 import React from 'react'
+import { useQuery } from 'react-query'
+import { getClients } from './api'
+import { Button, Card } from 'antd'
+import { IClient } from './types/types'
+import { CSSVariables } from '@/styles/_variables'
+import { useNavigate } from 'react-router-dom'
 
-import { Layout, Menu, MenuProps, theme } from 'antd'
-import Sider from 'antd/es/layout/Sider'
-import { Content } from 'antd/es/layout/layout'
-import { Outlet, useNavigate } from 'react-router-dom'
 
 
 
 function Clients() {
-  const navigate = useNavigate();
-  
-  const items: MenuProps['items'] = [
-    {
-      key: 'option1',
-      label:'option 1',
-      onClick: () => {navigate('/clients/clientContent')}
-    },
-    {
-      key: 'option2',
-      label:'option 2',
-      onClick: () => {navigate('/clients/option2')}
-    },
-    {
-      key: 'option3',
-      label:'option 3',
-      onClick: () => {navigate('/clients/option3')}
-    },
-    {
-      key: 'option4',
-      label:'option 4',
-      onClick: () => {navigate('/clients/option4')}
-    },
-    {
-      key: 'option5',
-      label:'option 5',
-      onClick: () => {navigate('/clients/option5')}
-    }
-  ] 
+  // const navigate = useNavigate();
+  const { data , isError, isLoading } = useQuery('todos', getClients)
+  const ddd: IClient = data as IClient
+  const navigate = useNavigate()
 
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const handleClick = () => {
+    navigate('/transactions')
+  }
 
   return (
-    <Layout
-      style={{ padding: '24px 0', background: colorBgContainer, borderRadius: borderRadiusLG }}
-    >
-      <Sider style={{ background: colorBgContainer }} width={200}>
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
-          style={{ height: '100%' }}
-          items={items}
-        />
-      </Sider>
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
-        <Outlet/>
-      </Content>
-    </Layout>
+    <>
+    
+        IAM CLIENT
+        {isLoading && <p>Loading</p>}
+        {isError && <p>Error</p>}
+        {!isLoading && !isError && 
+          <Card 
+            title={ddd.shortName} 
+            extra={<Button 
+              type='default' 
+              style={{marginLeft: '30px', }} 
+              children='Подробнее о счетах'
+              onClick={handleClick}
+              />} 
+            style={{ width: 600, background: CSSVariables.lightGreenGradient }}
+          >
+            <p>ИНН: {ddd.inn}</p>
+            {!!ddd.accounts?.length && <p>Количество счетов: {ddd.accounts?.length}</p>}
+            {!ddd.accounts?.length && <p>Открытых счетов</p>}
+          </Card>
+        }
+    </>
   )
 }
 

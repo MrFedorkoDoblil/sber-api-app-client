@@ -1,4 +1,4 @@
-import React from 'react'
+
 import AuthForm from '../AuthForm'
 
 import './style.scss'
@@ -6,7 +6,9 @@ import './style.scss'
 function AuthPage() {
   return (
     <div className='auth__page'>
-        <AuthForm/>
+        <AuthForm
+          classname={'auth__form'}
+        />
     </div>
   )
 }

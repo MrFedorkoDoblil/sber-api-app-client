@@ -22,7 +22,7 @@ export interface SBButtonProps {
     /* The `actionType` property in the `SBButtonProps` interface is a string literal type that can
     only have one of the three specified values: `'login'`, `'pay'`, or `'credit'`. This property is
     used to indicate the button inner text. */
-    actionType: 'login' | 'pay' | 'credit';
+    actionType: 'login' | 'pay' | 'credit' ;
     /* The `variant: 'primary' | 'secondary'` property in the `SBButtonProps` interface is specifying
     the variant of the button. */
     variant: 'primary' | 'secondary';

@@ -1,85 +1,80 @@
-import React from 'react';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu } from 'antd';
-import { Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import useGlobalStore from './global.store';
-import SBButton from './layout/components/Button/SBButton';
-import { UISize } from './layout/types/uiTypes';
-import AuthPage from './layout/components/AuthPage/AuthPage';
 
-const { Header, Content, Footer } = Layout;
+import AuthPage from './modules/auth/AuthPage/AuthPage';
+import {
+  UserOutlined,
+} from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
 
-const modules: MenuProps['items'] = [
-  {
-    key: 'cards',
-    label: 'Бизнесс карты'
-  },
-  {
-    key: 'clients',
-    label: 'Клиенты'
-  },
-  {
-    key: 'products',
-    label: 'Продукты'
-  },
-]
+const { Header, Content, Sider } = Layout;
 
-// const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-//   (icon, index) => {
-//     const key = String(index + 1);
+type MenuItems = Required<MenuProps>['items'];
+type GetItemArg = {
+  link: string;
+  label: React.ReactNode;
+  key: React.Key;
+  icon?: React.ReactNode;
+  children?: MenuItems[number];
+}
 
-//     return {
-//       key: `sub${key}`,
-//       icon: React.createElement(icon),
-//       label: `subnav ${key}`,
-
-//       children: new Array(4).fill(null).map((_, j) => {
-//         const subKey = index * 4 + j + 1;
-//         return {
-//           key: subKey,
-//           label: `option${subKey}`,
-//         };
-//       }),
-//     };
-//   },
-// );
+function useGetItem(
+  arr: GetItemArg[]
+): MenuItems {
+  const navigate = useNavigate()
+  return arr.map(({key, label, link, children, icon}) => {
+    return {
+      key,
+      icon,
+      children,
+      label,
+      onClick: () => {
+        navigate(link)
+      }
+  }}) as MenuItems;
+}
 
 const App: React.FC = () => {
+  const items = useGetItem([
+    {key: 1, label: 'Главная', link: '/', icon: <UserOutlined />,},
+    {key: 2, label: 'Клиенты', link: '/clients', icon: <UserOutlined />,},
+    {key: 3, label: 'Транзакции', link: '/transactions', icon: <UserOutlined />,}
+  ])
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
   const isAuth = useGlobalStore((state) => state.isAuth);
   const content = isAuth
   ? 
-  (
-    <Layout>
-    <Header style={{ display: 'flex', alignItems: 'center' }}>
-      <div className="demo-logo" />
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['2']}
-        items={modules}
-        style={{ flex: 1, minWidth: 0 }}
-      />
-      <SBButton
-        actionType='login'
-        onClick={() => {}}
-        size={UISize.SM}
-        variant='primary'
-      />
-    </Header>
-    <Content style={{ padding: '0 48px' }}>
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>App</Breadcrumb.Item>
-      </Breadcrumb>
-      <Outlet/>
-    </Content>
-    <Footer style={{ textAlign: 'center' }}>
-      mrFedorko ©{new Date().getFullYear()} Created by Iliia Fedorko
-    </Footer>
-  </Layout>
-  ) 
+  <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <div className="demo-logo-vertical" />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0, background: colorBgContainer }} />
+        <Content style={{ margin: '0 16px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>User</Breadcrumb.Item>
+            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+          </Breadcrumb>
+          <div
+            style={{
+              padding: 24,
+              minHeight: 360,
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+            }}
+          >
+            <Outlet/>
+          </div>
+        </Content>
+      </Layout>
+    </Layout>
   :
   <AuthPage/>
 

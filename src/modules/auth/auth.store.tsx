@@ -25,6 +25,8 @@ const useAuthStore = create<State & Action>((set) => ({
   confirmCodeCh: (confimCode: string) => set(() => ({confimCode})),
   allertCh: (allert: string) => set(() => ({allert})),
   resetAuth: () => set(() => ({ login: '', password: '', confimCode: '',})), 
+
+//   isAuthCh: (auth: boolean) => set(() => ({isAuth: auth}))
 }))
 
 export default useAuthStore
