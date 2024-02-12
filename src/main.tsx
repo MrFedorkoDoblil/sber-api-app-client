@@ -1,44 +1,30 @@
-import React from 'react'
+import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Clients from './modules/clients/index.tsx';
-import ClientContent from './modules/clients/components/ClientContent.tsx';
-import Option1 from './modules/clients/components/Option1.tsx';
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    
-    element: <App/>,
-    children:[
-      {
-        path:"clients",
-        element: <Clients/>,
+import { routeTree } from './routeTree.gen'
 
-        children: [
-          {
-            path:"client-content",
-            element: <ClientContent/>
-          },
-          {
-            path: 'option2',
-            element: <Option1/>
-          }
-        ]
-      }
-    ]
-  },
-],
-{
-  // basename: '/clients/client-content'
-});
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-)
+const router = createRouter({ routeTree })
+const queryClient = new QueryClient()
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
+// Render the app
+const rootElement = document.getElementById('root')!
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement)
+  root.render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StrictMode>,
+  )
+  
+}
