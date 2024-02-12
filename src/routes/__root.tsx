@@ -7,9 +7,11 @@ export const Route = createRootRoute({
     <>
       <div className="p-2 flex gap-2">
         {componentsList.map((item, index) => {
-          return <Link key={index} to={item.url} className="[&.active]:font-bold">
-            {item.name}
-          </Link> 
+          return <div style={{margin: '0 10px', display: 'inline-block'}}>
+            <Link key={index} to={item.url} className="[&.active]:font-bold">
+              {item.name}
+            </Link>
+          </div> 
         })}
         <Link to="/" className="[&.active]:font-bold">
           Home

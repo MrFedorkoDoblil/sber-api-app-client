@@ -12,7 +12,11 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TableImport } from './routes/table'
+import { Route as SpinImport } from './routes/spin'
+import { Route as ProgresImport } from './routes/progres'
 import { Route as FormImport } from './routes/form'
+import { Route as DatePickerImport } from './routes/datePicker'
+import { Route as ButtonImport } from './routes/button'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -22,8 +26,28 @@ const TableRoute = TableImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SpinRoute = SpinImport.update({
+  path: '/spin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProgresRoute = ProgresImport.update({
+  path: '/progres',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const FormRoute = FormImport.update({
   path: '/form',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DatePickerRoute = DatePickerImport.update({
+  path: '/datePicker',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ButtonRoute = ButtonImport.update({
+  path: '/button',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -40,8 +64,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/button': {
+      preLoaderRoute: typeof ButtonImport
+      parentRoute: typeof rootRoute
+    }
+    '/datePicker': {
+      preLoaderRoute: typeof DatePickerImport
+      parentRoute: typeof rootRoute
+    }
     '/form': {
       preLoaderRoute: typeof FormImport
+      parentRoute: typeof rootRoute
+    }
+    '/progres': {
+      preLoaderRoute: typeof ProgresImport
+      parentRoute: typeof rootRoute
+    }
+    '/spin': {
+      preLoaderRoute: typeof SpinImport
       parentRoute: typeof rootRoute
     }
     '/table': {
@@ -55,7 +95,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
+  ButtonRoute,
+  DatePickerRoute,
   FormRoute,
+  ProgresRoute,
+  SpinRoute,
   TableRoute,
 ])
 

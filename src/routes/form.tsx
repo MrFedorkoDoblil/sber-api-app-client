@@ -28,8 +28,8 @@ function LoginForm() {
   const handleFinish = (e: any) => {
     console.log(e)
     setTimeout(() => {
-        message.success('Loged in successfuly')
-    }, 2000);
+        message.success('success')         
+    }, 400);
   }
   const handleReset = useCallback(() => {
     setUserName('')

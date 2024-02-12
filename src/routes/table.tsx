@@ -6,6 +6,7 @@ const credentials = {
   userName: '123123',
   password: '123123'
 }
+
 const data: {name: string; nick: string, age: number, key: number}[] = [
   {
     name: 'Ilya Fedorko',
@@ -32,24 +33,6 @@ const data: {name: string; nick: string, age: number, key: number}[] = [
     key: 4,
   },
 ]
-
-type Column<T extends {
-  key: number | string;
-}> = {
-  title: keyof T;
-  sorter: (a: any, b: any) => number
-}
-declare function TypedColumn<T extends {key: string|number}>(column: T): Column<T>
-
-const ccolomn = TypedColumn<ArrayElement<typeof data>>(data[0]);
-
-
-type ArrayElement<ArrayType extends readonly unknown[]> = 
-  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
-
-  export const Route = createFileRoute('/table')({
-  component: () => <CustomTabel/>,
-})
 
 
 function CustomTabel() {
@@ -88,3 +71,7 @@ function CustomTabel() {
  )
   
 }
+
+export const Route = createFileRoute('/table')({
+  component: () => <CustomTabel/>
+})

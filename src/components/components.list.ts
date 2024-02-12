@@ -11,4 +11,16 @@ export const componentsList: {name:string; url: string}[] = [
         name: 'Table',
         url: '/table'
     },
+    {
+        name: 'Date picker',
+        url:'/datepicker'
+    },
+    {
+        name: 'Spin',
+        url:'/spin'
+    },
+    {
+        name: 'Progres',
+        url:'/Progres'
+    },
 ]
