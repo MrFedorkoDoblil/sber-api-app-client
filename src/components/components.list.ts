@@ -23,4 +23,12 @@ export const componentsList: {name:string; url: string}[] = [
         name: 'Progres',
         url:'/Progres'
     },
+    {
+        name: 'Upload',
+        url:'/Upload'
+    },
+    {
+        name: 'ComplexUpl',
+        url: '/complexUpl'
+    }
 ]

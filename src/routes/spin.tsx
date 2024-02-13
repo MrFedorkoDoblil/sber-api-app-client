@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Button, DatePicker, Spin } from "antd"
+import { Button,  Spin } from "antd"
 import { useState } from "react"
 
 export const Route = createFileRoute('/spin')({
